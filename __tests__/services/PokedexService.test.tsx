@@ -1,4 +1,4 @@
-import { fetchAllPokemons } from '../../services/PokedexService';
+import { fetchAllPokemons } from '../../app/request/PokedexRequest';
 
 describe('test of PokedexService', () => {
     test('test fetching all pokemons', async () => {
