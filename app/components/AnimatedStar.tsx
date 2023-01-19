@@ -10,7 +10,8 @@ const AnimatedStar = () => {
 
     const [rotationAnim] = useState(new Animated.Value(0));
     const [starColorAnim] = useState(new Animated.Value(0));
-    const [starStatus, setStarStatus] = useState(0)
+    const [sizeAnim] = useState(new Animated.Value(0));
+    const [starStatus, setStarStatus] = useState(0);
 
     const handlePress = () => {
         Animated.parallel([
@@ -20,6 +21,11 @@ const AnimatedStar = () => {
                 useNativeDriver: true,
             }),
             Animated.timing(starColorAnim, {
+                toValue: 1-starStatus,
+                duration: 500,
+                useNativeDriver: true,
+            }),
+            Animated.timing(sizeAnim, {
                 toValue: 1-starStatus,
                 duration: 500,
                 useNativeDriver: true,
@@ -38,10 +44,15 @@ const AnimatedStar = () => {
         outputRange: ["rgb(192,192,192)", "rgb(212,175,55)"],
     });
 
+    const sizeStar = sizeAnim.interpolate({
+        inputRange: [0, 1],
+        outputRange: [40, 45],
+    });
+
     return(
         <TouchableWithoutFeedback onPress={handlePress} >
             <Animated.View style={{transform: [{rotate: rotateStar}] }}>
-                <AnimatedSvg height={40} width={40} viewBox='-5 -5 55 55'>
+                <AnimatedSvg height={sizeStar} width={sizeStar} viewBox='-5 -5 55 55'>
                     <AnimatedPath d={starPath} fill={changeColor} stroke={changeColor} strokeWidth={2}/>
                 </AnimatedSvg>
             </Animated.View>
