@@ -25,8 +25,8 @@ const Pokedex = () => {
                 data.map(elem => {
                     console.log(elem);
                     return (
-                        <View style={styles.pokemonItem}>
-                            <Text style={styles.pokemonText} key={elem.name}>{elem.name}</Text>
+                        <View key={elem.name} style={styles.pokemonItem}>
+                            <Text style={styles.pokemonText} >{elem.name}</Text>
                             <AnimatedStar/>
                         </View>)
                 })
