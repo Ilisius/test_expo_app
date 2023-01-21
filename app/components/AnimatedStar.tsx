@@ -12,21 +12,21 @@ const AnimatedPath = Animated.createAnimatedComponent(Path);
 const AnimatedStar = (props : {pokemon : Pokemon}) => {
 
     const favoritesPokemons = useSelector((state : {favorite : Array<Pokemon>}) => state.favorite);
-    const animValue : number = favoritesPokemons.some(pkmn => pkmn.name === props.pokemon.name) ? 1 : 0;
+    const animValue : number = favoritesPokemons.some((pkmn : Pokemon) => pkmn.name === props.pokemon.name) ? 1 : 0;
     const [rotationAnim, setRotationAnim] = useState(new Animated.Value(animValue));
     const [starColorAnim, setStarColorAnim] = useState(new Animated.Value(animValue));
     const [sizeAnim, setSizeAnim] = useState(new Animated.Value(animValue));
     const dispatch = useDispatch();
 
     useEffect( () => {
-        const b : number = favoritesPokemons.some(pkmn => pkmn.name === props.pokemon.name) ? 1 : 0;
+        const b : number = favoritesPokemons.some((pkmn : Pokemon) => pkmn.name === props.pokemon.name) ? 1 : 0;
         setRotationAnim(new Animated.Value(b));
         setStarColorAnim(new Animated.Value(b));
         setSizeAnim(new Animated.Value(b));
     }, [animValue]);
 
     const handlePress = () => {
-        const isFavorite = favoritesPokemons.some(pkmn => pkmn.name === props.pokemon.name);
+        const isFavorite = favoritesPokemons.some((pkmn : Pokemon) => pkmn.name === props.pokemon.name);
 
         const anim = Animated.parallel([
             Animated.timing(rotationAnim, {
