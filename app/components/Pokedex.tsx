@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, SafeAreaView, ScrollView, StatusBar, View } from 'react-native';
+import { useSelector } from 'react-redux';
 import { fetchAllPokemons } from '../request/PokedexRequest';
 import AnimatedStar from './AnimatedStar'
 
-interface Pokemon {
+export interface Pokemon {
     name : string;
     apiUrl : string;
 }
@@ -14,7 +15,13 @@ const Pokedex = () => {
     const [data, setData] = useState<Array<Pokemon>>([]);
     useEffect(() => {
         fetchAllPokemons()
-            .then((result) => setData(result.results))
+            .then((result : {count : number, next : string, previous : string, results : Array<{name : string, url : string}>}) => {
+              const pokemons : Array<Pokemon> = result.results.map((apiRes) => {
+                const pokemon : Pokemon = {name : apiRes.name, apiUrl : apiRes.url};
+                return pokemon;
+              });
+              setData(pokemons);
+            })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }, []);
@@ -22,12 +29,11 @@ const Pokedex = () => {
     <SafeAreaView style={styles.container}>
         <ScrollView style={styles.scrollView}>
             {isLoading ? <Text>Loading Pokedex...</Text> :
-                data.map(elem => {
-                    console.log(elem);
+                data.map(pokemon => {
                     return (
-                        <View key={elem.name} style={styles.pokemonItem}>
-                            <Text style={styles.pokemonText} >{elem.name}</Text>
-                            <AnimatedStar/>
+                        <View key={pokemon.name} style={styles.pokemonItem}>
+                            <Text style={styles.pokemonText} >{pokemon.name}</Text>
+                            <AnimatedStar pokemon={pokemon}/>
                         </View>)
                 })
             }
