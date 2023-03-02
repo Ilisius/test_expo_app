@@ -1,39 +1,48 @@
-import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, SafeAreaView, ScrollView, StatusBar } from 'react-native';
-
-interface Pokemon {
-    name : string;
-    apiUrl : string;
-}
+import React from "react";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
+import { useFavorites } from "../hooks/useFavorites";
+import AnimatedStar from "./AnimatedStar";
 
 const Favorites = () => {
-    const [isLoading, setLoading] = useState(true);
-    const [data, setData] = useState<Array<Pokemon>>([]);
-    return (
+  const { isLoading, dataPokemon } = useFavorites();
+  return (
     <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.scrollView}>
-            {isLoading ? <Text>Not yet implemented...</Text> :
-                data.map(elem => {
-                    console.log(elem);
-                    return <Text key={elem.name}>{elem.name}</Text>
-                })
-            }
-        </ScrollView>
+      <ScrollView style={styles.scrollView}>
+        {isLoading ? (
+          <Text>Loading Pokedex...</Text>
+        ) : (
+          dataPokemon.map((pokemon) => {
+            return (
+              <View key={pokemon.apiUrl} style={styles.pokemonItem}>
+                <Text style={styles.pokemonText}>{pokemon.name}</Text>
+                <AnimatedStar pokemon={pokemon} />
+              </View>
+            );
+          })
+        )}
+      </ScrollView>
     </SafeAreaView>
-    );
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: StatusBar.currentHeight,
-    backgroundColor: 'aliceblue',
+    backgroundColor: "aliceblue",
   },
   scrollView: {
     marginHorizontal: 20,
   },
-  text: {
-    fontSize: 42,
+  pokemonItem: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+    marginTop: 5,
+    alignItems: "center",
+  },
+  pokemonText: {
+    fontSize: 25,
   },
 });
 
