@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Animated, TouchableWithoutFeedback } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
 import { useAnimatedStar } from "../hooks/useAnimatedStar";
-import { addFavorite, removeFavorite } from "../store/favoriteReducer";
 import { Pokemon } from "./Pokedex";
 import SvgStar from "./SvgStar";
 

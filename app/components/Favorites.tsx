@@ -1,20 +1,7 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  View,
-} from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import { useFavorites } from "../hooks/useFavorites";
 import AnimatedStar from "./AnimatedStar";
-
-interface Pokemon {
-  name: string;
-  apiUrl: string;
-}
 
 const Favorites = () => {
   const { isLoading, dataPokemon } = useFavorites();
