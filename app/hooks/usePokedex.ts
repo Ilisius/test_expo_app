@@ -1,10 +1,18 @@
 import { useEffect, useState } from "react";
+import { pokemonAdapter, RawResult } from "../adapters/pokemonAdapter";
 import { Pokemon } from "../components/Pokedex";
-import { fetchAllPokemons } from "../request/PokedexRequest";
+import {
+  fetchAllPokemons,
+  fetchPokemonsByName,
+} from "../request/PokedexRequest";
 
 export const usePokedex = () => {
   const [isLoading, setLoading] = useState(true);
-  const [dataPokemon, setDataPokemon] = useState<Array<Pokemon>>([]);
+  const [dataAllPokemon, setDataAllPokemon] = useState<Array<Pokemon>>([]);
+  const [dataPokemonDisplayed, setDataPokemonDisplayed] = useState<
+    Array<Pokemon>
+  >([]);
+  const [search, setSearch] = useState("");
   useEffect(() => {
     fetchAllPokemons()
       .then(
@@ -21,11 +29,27 @@ export const usePokedex = () => {
             };
             return pokemon;
           });
-          setDataPokemon(pokemons);
+          setDataAllPokemon(pokemons);
+          setDataPokemonDisplayed(pokemons);
         }
       )
       .catch((error) => console.error(error))
       .finally(() => setLoading(false));
   }, []);
-  return { isLoading, dataPokemon };
+
+  const searchPokemon = (search?: string) => {
+    if (!search) {
+      setDataPokemonDisplayed(dataAllPokemon);
+      setSearch("");
+      return;
+    }
+    setSearch(search);
+    fetchPokemonsByName(search)
+      .then((result: RawResult) => {
+        const pokemon: Pokemon = pokemonAdapter(result);
+        setDataPokemonDisplayed([pokemon]);
+      })
+      .catch((error) => {});
+  };
+  return { isLoading, dataPokemonDisplayed, searchPokemon, search };
 };

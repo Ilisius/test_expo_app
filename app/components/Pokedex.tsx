@@ -11,15 +11,21 @@ export interface Pokemon {
 }
 
 export const Pokedex = () => {
-  const { isLoading, dataPokemon } = usePokedex();
+  const { isLoading, dataPokemonDisplayed, searchPokemon, search } =
+    usePokedex();
   return (
     <SafeAreaView style={styles.container}>
-      <SearchBar lightTheme />
+      <SearchBar
+        lightTheme
+        onChangeText={searchPokemon}
+        value={search}
+        onClear={searchPokemon}
+      />
       <ScrollView style={styles.scrollView}>
         {isLoading ? (
           <Text>Loading Pokedex...</Text>
         ) : (
-          dataPokemon.map((pokemon) => {
+          dataPokemonDisplayed.map((pokemon) => {
             return <PokemonItem pokemon={pokemon} key={pokemon.apiUrl} />;
           })
         )}
