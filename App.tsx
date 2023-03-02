@@ -1,13 +1,11 @@
+import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
-import { Provider } from 'react-redux';
+import Pokedex from './app/components/Pokedex';
 import BottomNavigation from './app/navigation/BottomNavigation';
-import { store } from './app/store';
 
 export default function App() {
   return (
-    <Provider store={store}>
-      <BottomNavigation/>
-    </Provider>
+    <BottomNavigation/>
   );
 }
 
