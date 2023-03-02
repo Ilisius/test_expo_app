@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import { useFavorites } from "../hooks/useFavorites";
-import AnimatedStar from "./AnimatedStar";
+import { AnimatedStar } from "./AnimatedStar";
+import { PokemonItem } from "./PokemonItem";
 
-const Favorites = () => {
+export const Favorites = () => {
   const { isLoading, dataPokemon } = useFavorites();
   return (
     <SafeAreaView style={styles.container}>
@@ -12,12 +13,7 @@ const Favorites = () => {
           <Text>Loading Pokedex...</Text>
         ) : (
           dataPokemon.map((pokemon) => {
-            return (
-              <View key={pokemon.apiUrl} style={styles.pokemonItem}>
-                <Text style={styles.pokemonText}>{pokemon.name}</Text>
-                <AnimatedStar pokemon={pokemon} />
-              </View>
-            );
+            return <PokemonItem key={pokemon.apiUrl} pokemon={pokemon} />;
           })
         )}
       </ScrollView>
@@ -45,5 +41,3 @@ const styles = StyleSheet.create({
     fontSize: 25,
   },
 });
-
-export default Favorites;
