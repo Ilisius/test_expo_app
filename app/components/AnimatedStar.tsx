@@ -6,7 +6,7 @@ import SvgStar from "./SvgStar";
 
 const AnimatedSvg = Animated.createAnimatedComponent(SvgStar);
 
-const AnimatedStar = (props: { pokemon: Pokemon }) => {
+export const AnimatedStar = (props: { pokemon: Pokemon }) => {
   const { handlePress, rotateStar, sizeStar, changeColor } =
     useAnimatedStar(props);
 
@@ -18,5 +18,3 @@ const AnimatedStar = (props: { pokemon: Pokemon }) => {
     </TouchableWithoutFeedback>
   );
 };
-
-export default AnimatedStar;
