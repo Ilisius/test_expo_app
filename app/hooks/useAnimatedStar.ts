@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Pokemon } from "../components/Pokedex";
 import { addFavorite, removeFavorite } from "../store/favoriteReducer";
 
-export const useAnimatedStar = (props: { pokemon: Pokemon }) => {
+export const useAnimatedStar = (pokemon: Pokemon) => {
   const favoritesPokemons = useSelector(
     (state: { favorite: Array<Pokemon> }) => state.favorite
   );
   const animValue: number = favoritesPokemons.some(
-    (pkmn: Pokemon) => pkmn.name === props.pokemon.name
+    (pkmn: Pokemon) => pkmn.name === pokemon.name
   )
     ? 1
     : 0;
@@ -24,7 +24,7 @@ export const useAnimatedStar = (props: { pokemon: Pokemon }) => {
 
   useEffect(() => {
     const b: number = favoritesPokemons.some(
-      (pkmn: Pokemon) => pkmn.name === props.pokemon.name
+      (pkmn: Pokemon) => pkmn.name === pokemon.name
     )
       ? 1
       : 0;
@@ -35,7 +35,7 @@ export const useAnimatedStar = (props: { pokemon: Pokemon }) => {
 
   const handlePress = () => {
     const isFavorite = favoritesPokemons.some(
-      (pkmn: Pokemon) => pkmn.name === props.pokemon.name
+      (pkmn: Pokemon) => pkmn.name === pokemon.name
     );
 
     const anim = Animated.parallel([
@@ -56,8 +56,8 @@ export const useAnimatedStar = (props: { pokemon: Pokemon }) => {
       }),
     ]).start(() => {
       isFavorite
-        ? dispatch(removeFavorite(props.pokemon))
-        : dispatch(addFavorite(props.pokemon));
+        ? dispatch(removeFavorite(pokemon))
+        : dispatch(addFavorite(pokemon));
     });
   };
 
