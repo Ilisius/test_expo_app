@@ -45,9 +45,11 @@ export const usePokedex = () => {
       return;
     }
     setSearch(search);
-    const result = await fetchPokemonsByName(search);
-    const pokemon: Pokemon = pokemonAdapter(result);
-    setDataPokemonDisplayed([pokemon]);
+    try {
+      const result = await fetchPokemonsByName(search);
+      const pokemon: Pokemon = pokemonAdapter(result);
+      setDataPokemonDisplayed([pokemon]);
+    } catch {}
   };
   return {
     isLoading,
