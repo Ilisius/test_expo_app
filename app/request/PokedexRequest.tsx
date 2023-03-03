@@ -10,13 +10,9 @@ const fetchAllPokemons = async (limit: number = 100) => {
   return apiResults;
 };
 const fetchPokemonsByName = async (name: string) => {
-  try {
-    const results = await fetch(`${API_URL}pokemon/${name}`);
-    const apiResults = results.json();
-    return apiResults;
-  } catch (error) {
-    return;
-  }
+  const results = await fetch(`${API_URL}pokemon/${name}`);
+  const apiResults = results.json();
+  return apiResults;
 };
 
 export { fetchAllPokemons, fetchPokemonsByName };
