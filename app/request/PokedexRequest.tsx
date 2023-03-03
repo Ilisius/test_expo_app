@@ -1,6 +1,5 @@
 //Needed for jest's test
 import fetch from "node-fetch";
-import { err } from "react-native-svg/lib/typescript/xml";
 
 const API_URL = "https://pokeapi.co/api/v2/";
 
