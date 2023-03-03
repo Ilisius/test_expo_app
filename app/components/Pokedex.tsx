@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import { usePokedex } from "../hooks/usePokedex";
 import { AnimatedStar } from "./AnimatedStar";
 import { PokemonItem } from "./PokemonItem";
+import { SearchBar } from "@rneui/themed";
 
 export interface Pokemon {
   name: string;
@@ -10,14 +11,30 @@ export interface Pokemon {
 }
 
 export const Pokedex = () => {
-  const { isLoading, dataPokemon } = usePokedex();
+  const {
+    isLoading,
+    dataPokemonDisplayed,
+    searchPokemon,
+    getAllPokemons,
+    search,
+  } = usePokedex();
+
+  useEffect(() => {
+    getAllPokemons();
+  }, [getAllPokemons]);
   return (
     <SafeAreaView style={styles.container}>
+      <SearchBar
+        lightTheme
+        onChangeText={searchPokemon}
+        value={search}
+        onClear={searchPokemon}
+      />
       <ScrollView style={styles.scrollView}>
         {isLoading ? (
           <Text>Loading Pokedex...</Text>
         ) : (
-          dataPokemon.map((pokemon) => {
+          dataPokemonDisplayed.map((pokemon) => {
             return <PokemonItem pokemon={pokemon} key={pokemon.apiUrl} />;
           })
         )}
