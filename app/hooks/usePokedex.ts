@@ -14,28 +14,24 @@ export const usePokedex = () => {
   >([]);
   const [search, setSearch] = useState("");
 
-  const getAllPokemons = useCallback(() => {
-    fetchAllPokemons()
-      .then(
-        (result: {
-          count: number;
-          next: string;
-          previous: string;
-          results: Array<{ name: string; url: string }>;
-        }) => {
-          const pokemons: Array<Pokemon> = result.results.map((apiRes) => {
-            const pokemon: Pokemon = {
-              name: apiRes.name,
-              apiUrl: apiRes.url,
-            };
-            return pokemon;
-          });
-          setDataAllPokemon(pokemons);
-          setDataPokemonDisplayed(pokemons);
+  const getAllPokemons = useCallback(async () => {
+    const result = await fetchAllPokemons();
+    try {
+      const pokemons: Array<Pokemon> = result.results.map(
+        (apiRes: { name: string; url: string }) => {
+          const pokemon: Pokemon = {
+            name: apiRes.name,
+            apiUrl: apiRes.url,
+          };
+          return pokemon;
         }
-      )
-      .catch((error) => {})
-      .finally(() => setLoading(false));
+      );
+      setDataAllPokemon(pokemons);
+      setDataPokemonDisplayed(pokemons);
+      setLoading(false);
+    } catch {
+      console.warn("error");
+    }
   }, [fetchAllPokemons]);
 
   const searchPokemon = async (search?: string) => {
