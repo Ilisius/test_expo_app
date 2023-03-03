@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, Text, SafeAreaView, ScrollView, View } from "react-native";
 import { usePokedex } from "../hooks/usePokedex";
 import { AnimatedStar } from "./AnimatedStar";
@@ -11,8 +11,17 @@ export interface Pokemon {
 }
 
 export const Pokedex = () => {
-  const { isLoading, dataPokemonDisplayed, searchPokemon, search } =
-    usePokedex();
+  const {
+    isLoading,
+    dataPokemonDisplayed,
+    searchPokemon,
+    getAllPokemons,
+    search,
+  } = usePokedex();
+
+  useEffect(() => {
+    getAllPokemons();
+  }, [getAllPokemons]);
   return (
     <SafeAreaView style={styles.container}>
       <SearchBar

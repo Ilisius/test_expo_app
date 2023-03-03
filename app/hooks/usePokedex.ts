@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { pokemonAdapter, RawResult } from "../adapters/pokemonAdapter";
 import { Pokemon } from "../components/Pokedex";
 import {
@@ -13,7 +13,8 @@ export const usePokedex = () => {
     Array<Pokemon>
   >([]);
   const [search, setSearch] = useState("");
-  useEffect(() => {
+
+  const getAllPokemons = useCallback(() => {
     fetchAllPokemons()
       .then(
         (result: {
@@ -33,23 +34,26 @@ export const usePokedex = () => {
           setDataPokemonDisplayed(pokemons);
         }
       )
-      .catch((error) => console.error(error))
+      .catch((error) => {})
       .finally(() => setLoading(false));
-  }, []);
+  }, [fetchAllPokemons]);
 
-  const searchPokemon = (search?: string) => {
+  const searchPokemon = async (search?: string) => {
     if (!search) {
       setDataPokemonDisplayed(dataAllPokemon);
       setSearch("");
       return;
     }
     setSearch(search);
-    fetchPokemonsByName(search)
-      .then((result: RawResult) => {
-        const pokemon: Pokemon = pokemonAdapter(result);
-        setDataPokemonDisplayed([pokemon]);
-      })
-      .catch((error) => {});
+    const result = await fetchPokemonsByName(search);
+    const pokemon: Pokemon = pokemonAdapter(result);
+    setDataPokemonDisplayed([pokemon]);
   };
-  return { isLoading, dataPokemonDisplayed, searchPokemon, search };
+  return {
+    isLoading,
+    dataPokemonDisplayed,
+    searchPokemon,
+    getAllPokemons,
+    search,
+  };
 };
